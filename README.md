@@ -61,20 +61,20 @@ Accept payments
 Every time you want to allow the user to make you a Bitcoin payment, all you need is an unique_ID for that user in your database, and use that unique_ID to create an ***bitcoin address*** for him to pay at, for example:
 
 ```javascript
-  var unique_ID = 5554555 // get this from your database
+var unique_ID = 5554555 // get this from your database
 
-  gateway.createAddress(unique_ID)
-    .then(function(address) {
+gateway.createAddress(unique_ID)
+.then(function(address) {
+
+    console.log('got new address', address.address, 'and it has', address.seconds_left / 60, 'minutes left before it expires.')
     
-      console.log('got new address', address.address, 'and it has', address.seconds_left / 60, 'minutes left before it expires.')
-      
-      var amount = 3.99
-      
-      console.log('ask user to pay ', amount, 'USD in it as', gateway.USDtoBIT(amount) + ' bits, using HTML, preferably as a QR code')
-      
-    }).catch(function() {
-      console.log('limit reached! cant get a new address :(')
-    })
+    var amount = 3.99
+    
+    console.log('ask user to pay ', amount, 'USD in it as', gateway.USDtoBIT(amount) + ' bits, using HTML, preferably as a QR code')
+    
+}).catch(function() {
+    console.log('limit reached! cant get a new address :(')
+})
 ```
 Would output:
 ```
@@ -119,10 +119,12 @@ gateway.events.on('initialized', function() {
 });
 ```
 
-Addresses expiration
+Expiration timer
 --
 
 All newly created addresses have a 15 minutes countdown, it is a consequence of a limitation imposed by [BIP0044](https://github.com/bitcoin/bips/blob/master/bip-0044.mediawiki).
+
+**It is important to show the user the time it has left to pay to a given bitcoin address, and to handle it's expiration (address renewal) apropiatedly**
 
 [BIP0044](https://github.com/bitcoin/bips/blob/master/bip-0044.mediawiki) defines that when recovering a [Deterministic Wallet](https://en.bitcoin.it/wiki/Deterministic_wallet), all child addresses are re-created to recover all the funds on each one of them, if 20 consecutive child addresses are checked and no funds are found, it finishes recovering and no more are checked, assuming there is no more funds in any more child-addresses.
 
