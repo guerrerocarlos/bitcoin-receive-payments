@@ -82,6 +82,9 @@ created new address 1K2xWPtGsvg5Sa2X7URZ5VfU8xS62McbXz and it has 14 minutes lef
 ask user to pay 3.99 USD (3763.63610805 bits) using HTML, preferably as a QR code
 ```
 
+Process payments
+--
+
 With that address (**1K2xWPtGsvg5Sa2X7URZ5VfU8xS62McbXz**) you can now ask the user to make the payment, using a QR code, and a ***fancy user interface***.
 
 On your service backend, any payment done to that address sent to your wallet will trigger a **payment** event that must be handled as follows:
