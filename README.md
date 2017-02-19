@@ -140,7 +140,7 @@ So this is solved assigning addresses an expiration date in minutes and re-using
 
 The number of minutes can be modified towards improving user experience, only keep in mind that the objective is to ensure that no addresses are left unused.
 
-Countdowns included
+Batteries included
 --
 
-This module automatically makes sure to reuse addresses that haven't received a payment. Giving them 15min for each customer/user to use them or get a new one, if during this time, there is no payment to it, the address will be freeded to be reused. But it's up to you to show that to the user, in the interface accordingly.
+This module automatically takes care of all the timing and proper address reuse to comply with [BIP0044](https://github.com/bitcoin/bips/blob/master/bip-0044.mediawiki). All payments made to addresses created using this module, will reach your wallet without problem.
