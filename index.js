@@ -125,8 +125,18 @@ module.exports = gateway = function(xpub, exchange_key) {
       self.BITtoUSD = function(amount) {
         return self.fx.convert(amount / 1000000, { from: 'BTC', to: 'USD' });
       }
+      self.uBTCtoUSD = self.BITtoUSD
+      self.SATtoUSD = function(amount) {
+        return self.fx.convert(amount / 100000000, { from: 'BTC', to: 'USD' });
+      }
       self.mBTCtoUSD = function(amount) {
         return self.fx.convert(amount / 100000000, { from: 'BTC', to: 'USD' });
+      }
+      self.uBTCtoSAT = function(amount) {
+        return amount * 100
+      }
+      self.SATtouBTC = function(amount) {
+        return amount / 100
       }
       self.BITto = function(to, amount) {
         return self.fx.convert(amount / 100000000, { from: 'BTC', to: to });
@@ -151,12 +161,13 @@ module.exports = gateway = function(xpub, exchange_key) {
 
   this.addUSD = function(payment) {
     debugbrp(colors.red.underline('payment-before'), payment)
-    payment.usd_amount = self.mBTCtoUSD(payment.amount)
+    payment.usd_amount = self.SATtoUSD(payment.amount)
     debugbrp(colors.green.underline('payment-after'), payment)
     return payment
   }
 
   this.received_payment = function(payment) {
+    debugbrp(colors.green('<received_payment>'), payment)
     self.forgetAddress(payment.address)
     id_assigned_to_address(payment.address).then(function(id) {
       payment.id = id
@@ -198,13 +209,13 @@ module.exports = gateway = function(xpub, exchange_key) {
 
         self.forgetAddress(address.toString())
       } else {
-        bitcoin.getBalance(address).then(function(transaction) {
+        bitcoin.getBalance(address.toString()).then(function(transaction) {
           //   debugaddress(colors.green('transaction for address', address), transaction)
           if (transaction.txs > 0) {
-            debugaddress(colors.black.bgRed('blockchain used address', address.toString()))
+            debugaddress(colors.black.bgRed('blockchain used address', address.toString()), 'transaction', transaction)
             client.get('address-' + address.toString(), function(err, reply) {
               if (reply != null) {
-                self.received_payment({ address: address.toString(), amount: transaction.in })
+                self.received_payment({ address: address.toString(), amount: self.uBTCtoSAT(transaction.in) })
               } else {
                 self.forgetAddress(address.toString())
               }
