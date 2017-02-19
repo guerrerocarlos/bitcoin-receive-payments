@@ -1,6 +1,6 @@
 bitcoin-receive-payments
 ===================
-Allow your service to receive bitcoin payments **directly from the bitcoin P2P network**.
+Allow your service to receive/accept bitcoin payments **directly from the bitcoin P2P network**.
 
 Payment notifications are received **live**, directly from the bitcoin network in less than 4 seconds.
 
