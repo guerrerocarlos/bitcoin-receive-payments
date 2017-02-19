@@ -129,6 +129,8 @@ All newly created addresses have a 15 minutes countdown, it is a consequence of 
 
 **It is important to show the user the time it has left to pay to a given bitcoin address, and to handle it's expiration (address renewal) appropriately, preferably showing a live timer/countdown**
 
+**Why this timer**
+
 [BIP0044](https://github.com/bitcoin/bips/blob/master/bip-0044.mediawiki) defines that when recovering a [Deterministic Wallet](https://en.bitcoin.it/wiki/Deterministic_wallet), all child addresses are re-created to recover all the funds on each one of them, if 20 consecutive child addresses are checked and no funds are found, it finishes recovering and no more are checked, assuming there is no more funds in any more child-addresses.
 
 All this, ensures that no child addresses are created if existing ones haven't been used, defining a maximum of 20 simultaneous unused addresses, all this is handled automatically by this module.
