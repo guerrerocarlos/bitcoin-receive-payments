@@ -1,0 +1,29 @@
+{
+  "name": "bitcoin-receive-payments",
+  "version": "0.0.1",
+  "description": "Plug-and-play module to start accepting bitcoins.",
+  "main": "index.js",
+  "dependencies": {
+    "bitcore-lib": "^0.13.19",
+    "blockchain-api": "^1.3.2",
+    "blockchain.info": "^2.6.0",
+    "colors": "^1.1.2",
+    "debug": "^2.6.1",
+    "money": "^0.2.0",
+    "redis": "^2.6.5",
+    "socket.io": "^1.7.3",
+    "socket.io-client": "^1.7.3"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "node test.js"
+  },
+  "keywords": [
+    "bitcoin",
+    "gateway",
+    "payment",
+    "standalone"
+  ],
+  "author": "Carlos Guerrero <guerrerocarlos@gmail.com>",
+  "license": "MIT"
+}
