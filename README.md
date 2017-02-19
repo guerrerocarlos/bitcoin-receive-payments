@@ -53,6 +53,8 @@ For example, the **bitpay** wallet (desktop version) automatically creates one f
 On **Copay** (iOS) wallet:
 > **Settings -> Advanced -> Wallet Information -> Copayer 0**
 
+This public key (xPub) will not allow the gateway to use any funds in your wallet, but will allow the gateway to create as many child public addresses as needed, to receive all the payments from your customers.
+
 Accept payments
 --
 
@@ -64,7 +66,7 @@ Every time you want to allow the user to make you a Bitcoin payment, all you nee
   gateway.createAddress(unique_ID)
     .then(function(address) {
     
-      console.log('got new address', address.address, ' and it has', address.seconds_left / 60, 'minutes left before it expires.')
+      console.log('got new address', address.address, 'and it has', address.seconds_left / 60, 'minutes left before it expires.')
       
       var amount = 3.99
       
@@ -76,8 +78,8 @@ Every time you want to allow the user to make you a Bitcoin payment, all you nee
 ```
 Would output:
 ```
-created new address 1K2xWPtGsvg5Sa2X7URZ5VfU8xS62McbXz  and it has 14 minutes left before it expires.
-ask user to pay 3.99 USD (3763.63610805 bits) using HTML (3763.63610805 bits), preferably as a QR code
+created new address 1K2xWPtGsvg5Sa2X7URZ5VfU8xS62McbXz and it has 14 minutes left before it expires.
+ask user to pay 3.99 USD (3763.63610805 bits) using HTML, preferably as a QR code
 ```
 
 With that address (**1K2xWPtGsvg5Sa2X7URZ5VfU8xS62McbXz**) you can now ask the user to make the payment, using a QR code, and a ***fancy user interface***.
