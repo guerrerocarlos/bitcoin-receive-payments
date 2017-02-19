@@ -99,7 +99,7 @@ got a payment!.
   usd_amount: 4.034911868211425 }
 ````
 
-With this information you can perfectly know that the user with the unique_id **5554555** is the one who made the payment of the **$4** (usd_amount field) and process it accordingly. Preferably updating the user interface on the fly, using some real-time communitacion like [socket.io](https://socket.io/).
+With this information you can perfectly know that the user with the unique_id **5554555** is the one who made the payment of the **$3.99** (usd_amount field) and process it accordingly (some cents difference will always happen depending on exchange rate of the moment). Preferably updating the user interface on the fly, using some real-time communitacion like [socket.io](https://socket.io/).
 
 **Note:**
 
