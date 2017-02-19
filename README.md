@@ -119,7 +119,7 @@ gateway.events.on('initialized', function() {
 });
 ```
 
-Expiration timer
+Address expiration timer
 --
 
 All newly created addresses have a 15 minutes countdown, it is a consequence of a limitation imposed by [BIP0044](https://github.com/bitcoin/bips/blob/master/bip-0044.mediawiki).
