@@ -103,7 +103,7 @@ With this information you can perfectly know that the user with the unique_id **
 
 **Note:**
 
-The **payment** events will also be triggered at **gateway.connect()** if there are payments that happened when the server was reloading/restarting or just turned off. So make sure to handle the payment event, before starting the gateway with:
+The ***payment*** events will also be triggered at **gateway.connect()** if there are payments that happened when the server was reloading/restarting or just turned off. So make sure to handle the ***payment*** event, before starting the gateway with:
 
 ```javascript
 gateway.connect()
