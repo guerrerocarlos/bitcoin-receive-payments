@@ -1,8 +1,8 @@
 bitcoin-receive-payments
 ===================
-Allow your service to receive bitcoin payments directly from the bitcoin P2P network.
+Allow your service to receive bitcoin payments **directly from the bitcoin P2P network**.
 
-Payment notifications are received **live**, directly from the bitcoin network.
+Payment notifications are received **live**, directly from the bitcoin network in less than 4 seconds.
 
 An unique bitcoin address is used for each payment, and all funds go to the same wallet, using a [Deterministic Wallet](https://en.bitcoin.it/wiki/Deterministic_wallet) public key. 
 
@@ -15,7 +15,7 @@ Bitcoin is designed to remove intermediaries, this module intends exactly that.
 Security
 --
 
-No private key is stored in the server, so **funds cannot be used even if the server get's hacked**.
+No private key is stored in the server, so **funds cannot be stolen even if the server get's hacked**.
 
 Backend
 --
@@ -28,12 +28,16 @@ Install
 
 Use
 ---
-Initialize the payment gateway directly in your nodejs app:
+
+```javascript
+var pub_key = 'xpub6CV... extended public key (xPub)'
+var openexchangerates_key = 'd1c95b7b... key from openexchangerates.org' // to automatically convert USD amounts to BTC at real time rates
 ```
+
+Initialize the payment gateway inside in your nodejs app:
+```javascript
 var gateway = new BitcoinGateway(pub_key, openexchangerates_key)
 ```
-**pub_key** is a [extended public key (xPub)](https://bitcoin.org/en/glossary/extended-key) 
-**openexchangerates_key** is a API key from [openexchangerates.org](https://openexchangerates.org/)
 
 
 Obtaining an Extended Public Key (xPub) 
@@ -42,12 +46,13 @@ xPubs can be created with your bitcoin wallet if it supports [BIT32](https://git
 
 I do recommend visiting [http://bip32.org/](http://bip32.org/) to better understand how Deterministic Wallets work.
 
-The **bitpay** wallet (desktop version) automatically creates it for you, you can find it in **Settings -> Personal Wallet -> More Options -> Wallet Information -> Copayer 0**
+The **bitpay** wallet (desktop version) automatically creates one for you, you can find it at 
+> **Settings -> Personal Wallet -> More Options -> Wallet Information -> Copayer 0**
 
 Use
 --
 
-Every time you want to allow the user to make a bitcoin payment, all you need is an unique_ID for that user in your database, and use that ID to create an ***unique address*** for him, for example this script:
+Every time you want to allow the user to make a bitcoin payment, all you need is an unique_ID for that user in your database, and use that unique_ID to create an ***bitcoin address*** for him to pay at, for example this script:
 
 ```javascript
   var unique_ID = 5554555 // get this from your database
@@ -55,19 +60,19 @@ Every time you want to allow the user to make a bitcoin payment, all you need is
   gateway.createAddress(unique_ID)
     .then(function(address) {
     
-      console.log('got new address', address.address, ' and it has', address.seconds_left / 60, 'minutes left.')
+      console.log('got new address', address.address, ' and it has', address.seconds_left / 60, 'minutes left before it expires.')
       
       var amount = 3.99
       
-      console.log('will ask user ', amount, 'USD in it as', gateway.USDtoBIT(amount) + ' bits, using HTML, preferably as a QR code')
+      console.log('ask user to pay ', amount, 'USD in it as', gateway.USDtoBIT(amount) + ' bits, using HTML, preferably as a QR code')
       
     }).catch(function() {
       console.log('limit reached! cant get a new address :(')
     })
 ```
 Would output:
-> created new address 1K2xWPtGsvg5Sa2X7URZ5VfU8xS62McbXz  and it has 14.992800001303355 minutes left.
-> ask user  3.99 USD (3763.63610805 bits) using HTML (3763.63610805 bits), preferably as a QR code
+> created new address 1K2xWPtGsvg5Sa2X7URZ5VfU8xS62McbXz  and it has 14 minutes left before it expires.
+> ask user to pay 3.99 USD (3763.63610805 bits) using HTML (3763.63610805 bits), preferably as a QR code
 
 All payments sent to your wallet will trigger a **payment** event that must be handled as follows:
 ```javascript
@@ -75,8 +80,14 @@ gateway.events.on('payment', function(payment) {
   console.log('got a payment on one of our addresses!.', payment)
 })
 ```
+So that if someone makes a payment to that address, you will receive a notification it in matter of seconds:
+>got a payment on one of our addresses!. 
+>{ address: '1K2xWPtGsvg5Sa2X7URZ5VfU8xS62McbXz',
+  amount: 380600,
+  **id: '5554555'**,
+  usd_amount: **4.034911868211425** }
 
-The **payment** event will also be triggered at **initialization** if there are payments that happened when the server was reloading/restarting or just turned off. So make sure to handle the payment event, before starting the gateway with:
+The **payment** events will also be triggered at **gateway.connect()** if there are payments that happened when the server was reloading/restarting or just turned off. So make sure to handle the payment event, before starting the gateway with:
 
 ```javascript
 gateway.connect()
@@ -92,24 +103,17 @@ gateway.events.on('initialized', function() {
 });
 ```
 
-So that if someone makes a payment to that address, you will receive a notification it in matter of 2 or 3 seconds:
->got a payment on one of our addresses!. 
->{ address: '1K2xWPtGsvg5Sa2X7URZ5VfU8xS62McbXz',
-  amount: 380600,
-  **id: '5554555'**,
-  usd_amount: **4.034911868211425** }
-
 With this information you can perfectly know that the user with the **unique_id 5554555** is the one who made the payment of the **$4** and process it accordingly.
 
-Address expiration time
+Addresses expiration
 --
 
-All newly created addresses have countdown of 15 minutes, it is a consequence of a limitation imposed by [BIP0044](https://github.com/bitcoin/bips/blob/master/bip-0044.mediawiki) specification.
+All newly created addresses have a 15 minutes countdown, it is a consequence of a limitation imposed by [BIP0044](https://github.com/bitcoin/bips/blob/master/bip-0044.mediawiki).
 
-When recovering a [Deterministic Wallet](https://en.bitcoin.it/wiki/Deterministic_wallet) all child addresses are recreated to recover all the funds on each one of them, if 20 consecutive child addresses are checked and no funds are found, it finishes recovering and no more are checked, assuming there is no more funds in any more child-addresses.
+[BIP0044](https://github.com/bitcoin/bips/blob/master/bip-0044.mediawiki) defines that when recovering a [Deterministic Wallet](https://en.bitcoin.it/wiki/Deterministic_wallet), all child addresses are re-created to recover all the funds on each one of them, if 20 consecutive child addresses are checked and no funds are found, it finishes recovering and no more are checked, assuming there is no more funds in any more child-addresses.
 
-This module automatically makes sure to reuse addresses that haven't received a payment. Giving them a time expiration (15min) for each customer/user to use them, or get a new one, after which, the address can be reused or reassigned.
+This module automatically makes sure to reuse addresses that haven't received a payment. Giving them a expiration (15min) for each customer/user to use them, or get a new one, after which, the address can be reused or reassigned.
 
-All this, ensures that no child addresses are created if existing ones haven't been used, defining a maximum of 15 simultaneous unused addresses, all this is handled automatically by this module.
+All this, ensures that no child addresses are created if existing ones haven't been used, defining a maximum of 20 simultaneous unused addresses, all this is handled automatically by this module.
 
 The number of minutes can be modified towards improving user experience, only keep in mind that the objective is to ensure that no addresses are left unused.
