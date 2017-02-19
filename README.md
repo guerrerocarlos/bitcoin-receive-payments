@@ -75,10 +75,12 @@ Every time you want to allow the user to make you a Bitcoin payment, all you nee
     })
 ```
 Would output:
-> created new address 1K2xWPtGsvg5Sa2X7URZ5VfU8xS62McbXz  and it has 14 minutes left before it expires.
-> ask user to pay 3.99 USD (3763.63610805 bits) using HTML (3763.63610805 bits), preferably as a QR code
+```
+created new address 1K2xWPtGsvg5Sa2X7URZ5VfU8xS62McbXz  and it has 14 minutes left before it expires.
+ask user to pay 3.99 USD (3763.63610805 bits) using HTML (3763.63610805 bits), preferably as a QR code
+```
 
-With that address **(1K2xWPtGsvg5Sa2X7URZ5VfU8xS62McbXz)** you can now ask the user to make the payment, using a QR code, and a fancy user interface.
+With that address (**1K2xWPtGsvg5Sa2X7URZ5VfU8xS62McbXz**) you can now ask the user to make the payment, using a QR code, and a ***fancy user interface***.
 
 On your service backend, any payment done to that address sent to your wallet will trigger a **payment** event that must be handled as follows:
 ```javascript
@@ -87,11 +89,15 @@ gateway.events.on('payment', function(payment) {
 })
 ```
 So that if someone makes a payment to that address, you will receive a notification it in matter of seconds:
->got a payment!. 
->{ address: '1K2xWPtGsvg5Sa2X7URZ5VfU8xS62McbXz',
+```
+got a payment!. 
+{ address: '1K2xWPtGsvg5Sa2X7URZ5VfU8xS62McbXz',
   amount: 380600,
   **id: '5554555'**,
   usd_amount: **4.034911868211425** }
+````
+
+With this information you can perfectly know that the user with the **unique_id 5554555** is the one who made the payment of the **$4** (usd_amount field) and process it accordingly.
 
 **Note:**
 
@@ -110,8 +116,6 @@ gateway.events.on('initialized', function() {
   // gateway.createAddress(unique_id)...
 });
 ```
-
-With this information you can perfectly know that the user with the **unique_id 5554555** is the one who made the payment of the **$4** and process it accordingly.
 
 Addresses expiration
 --
