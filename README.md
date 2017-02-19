@@ -93,11 +93,11 @@ So that if someone makes a payment to that address, you will receive a notificat
 got a payment!. 
 { address: '1K2xWPtGsvg5Sa2X7URZ5VfU8xS62McbXz',
   amount: 380600,
-  **id: '5554555'**,
-  usd_amount: **4.034911868211425** }
+  id: '5554555',
+  usd_amount: 4.034911868211425 }
 ````
 
-With this information you can perfectly know that the user with the **unique_id 5554555** is the one who made the payment of the **$4** (usd_amount field) and process it accordingly.
+With this information you can perfectly know that the user with the unique_id **5554555** is the one who made the payment of the **$4** (usd_amount field) and process it accordingly. Preferably updating the user interface on the fly, using some real-time communitacion like [socket.io](https://socket.io/).
 
 **Note:**
 
