@@ -36,6 +36,7 @@ var openexchangerates_key = 'd1c95b7b... key from openexchangerates.org' // to a
 
 Initialize the payment gateway inside in your nodejs app:
 ```javascript
+var BitcoinGateway = require('bitcoin-receive-payments')
 var gateway = new BitcoinGateway(pub_key, openexchangerates_key)
 ```
 

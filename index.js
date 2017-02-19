@@ -198,13 +198,13 @@ module.exports = gateway = function(xpub, exchange_key) {
 
         self.forgetAddress(address.toString())
       } else {
-        bitcoin.getAddress(address).then(function(transaction) {
+        bitcoin.getBalance(address).then(function(transaction) {
           //   debugaddress(colors.green('transaction for address', address), transaction)
-          if (transaction.txs.length > 0) {
+          if (transaction.txs > 0) {
             debugaddress(colors.black.bgRed('blockchain used address', address.toString()))
             client.get('address-' + address.toString(), function(err, reply) {
               if (reply != null) {
-                self.received_payment({ address: address.toString(), amount: transaction.total_received })
+                self.received_payment({ address: address.toString(), amount: transaction.in })
               } else {
                 self.forgetAddress(address.toString())
               }
@@ -283,11 +283,11 @@ module.exports = gateway = function(xpub, exchange_key) {
     })
   }
 
-  self.connect = function(){
-  bitcoin.events.on('connected', function() {
-    self.check_gap()
-  })
-  bitcoin.connect()
+  self.connect = function() {
+    bitcoin.events.on('connected', function() {
+      self.check_gap()
+    })
+    bitcoin.connect()
   }
 
 

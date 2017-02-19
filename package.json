@@ -25,5 +25,9 @@
     "standalone"
   ],
   "author": "Carlos Guerrero <guerrerocarlos@gmail.com>",
-  "license": "MIT"
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "github.com/guerrerocarlos/bitcoin-receive-payments"
+  }
 }
