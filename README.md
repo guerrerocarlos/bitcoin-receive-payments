@@ -26,34 +26,37 @@ Install
 
 > npm install bitcoin-receive-payments --save
 
-Use
+Initialization
 ---
 
 ```javascript
-var pub_key = 'xpub6CV... extended public key (xPub)'
-var openexchangerates_key = 'd1c95b7b... key from openexchangerates.org' // to automatically convert USD amounts to BTC at real time rates
+const pub_key = 'xpub6CV... extended public key (xPub)'
+const openexchangerates_key = 'd1c95b7b... key from openexchangerates.org' // to automatically convert USD amounts to BTC at real time rates
 ```
 
 Initialize the payment gateway inside in your nodejs app:
 ```javascript
-var BitcoinGateway = require('bitcoin-receive-payments')
-var gateway = new BitcoinGateway(pub_key, openexchangerates_key)
+const BitcoinGateway = require('bitcoin-receive-payments')
+const gateway = new BitcoinGateway(pub_key, openexchangerates_key)
 ```
 
 
 Obtaining an Extended Public Key (xPub) 
 ----
-xPubs can be created with your bitcoin wallet if it supports [BIT32](https://github.com/bitcoin/bips/blob/master/bip-0032.mediawiki) you can also [create one online](http://bip32.org/) but I wouldn't recommend it.
+xPubs can be created any bitcoin wallet that supports [BIT32](https://github.com/bitcoin/bips/blob/master/bip-0032.mediawiki) you can also [create one online](http://bip32.org/) but I wouldn't recommend it.
 
 I do recommend visiting [http://bip32.org/](http://bip32.org/) to better understand how Deterministic Wallets work.
 
-The **bitpay** wallet (desktop version) automatically creates one for you, you can find it at 
+For example, the **bitpay** wallet (desktop version) automatically creates one for you, in the it's located at: 
 > **Settings -> Personal Wallet -> More Options -> Wallet Information -> Copayer 0**
 
-Use
+On **Copay** (iOS) wallet:
+> **Settings -> Advanced -> Wallet Information -> Copayer 0**
+
+Accept payments
 --
 
-Every time you want to allow the user to make a bitcoin payment, all you need is an unique_ID for that user in your database, and use that unique_ID to create an ***bitcoin address*** for him to pay at, for example this script:
+Every time you want to allow the user to make you a Bitcoin payment, all you need is an unique_ID for that user in your database, and use that unique_ID to create an ***bitcoin address*** for him to pay at, for example:
 
 ```javascript
   var unique_ID = 5554555 // get this from your database
@@ -75,18 +78,22 @@ Would output:
 > created new address 1K2xWPtGsvg5Sa2X7URZ5VfU8xS62McbXz  and it has 14 minutes left before it expires.
 > ask user to pay 3.99 USD (3763.63610805 bits) using HTML (3763.63610805 bits), preferably as a QR code
 
-All payments sent to your wallet will trigger a **payment** event that must be handled as follows:
+With that address **(1K2xWPtGsvg5Sa2X7URZ5VfU8xS62McbXz)** you can now ask the user to make the payment, using a QR code, and a fancy user interface.
+
+On your service backend, any payment done to that address sent to your wallet will trigger a **payment** event that must be handled as follows:
 ```javascript
 gateway.events.on('payment', function(payment) {
-  console.log('got a payment on one of our addresses!.', payment)
+  console.log('got a payment!.', payment)
 })
 ```
 So that if someone makes a payment to that address, you will receive a notification it in matter of seconds:
->got a payment on one of our addresses!. 
+>got a payment!. 
 >{ address: '1K2xWPtGsvg5Sa2X7URZ5VfU8xS62McbXz',
   amount: 380600,
   **id: '5554555'**,
   usd_amount: **4.034911868211425** }
+
+**Note:**
 
 The **payment** events will also be triggered at **gateway.connect()** if there are payments that happened when the server was reloading/restarting or just turned off. So make sure to handle the payment event, before starting the gateway with:
 
