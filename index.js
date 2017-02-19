@@ -13,12 +13,10 @@ var seconds_in_cache_5 = 60 * 5
 var redis = require('redis');
 var client = redis.createClient();
 var max_gap = 15
-var blockexplorer = require('blockchain.info/blockexplorer')
 var debugbrp = require('debug')('brp')
 var debugaddress = require('debug')('brp:address')
 var colors = require('colors')
 var RatesApi = require('openexchangerates-api');
-
 
 var set_address_in_use = function(address, id) {
   debugaddress(colors.yellow('<set_address_in_use>', address, id))
@@ -85,7 +83,6 @@ var id_assigned_to_address = function(address) {
   })
 }
 
-
 var is_address_available = function(address, id) {
   debugaddress(colors.yellow('<is_address_available>', address))
   return new Promise(function(Success, Reject) {
@@ -101,7 +98,6 @@ var is_address_available = function(address, id) {
     });
   })
 }
-
 
 module.exports = gateway = function(xpub, exchange_key) {
   this.xpub = xpub
@@ -123,14 +119,17 @@ module.exports = gateway = function(xpub, exchange_key) {
     self.exchange.latest(function handleCurrencies(err, data) {
       self.fx.base = "USD";
       self.fx.rates = data.rates
-      self.USDtoBTC = function(amount) {
-        return self.fx.convert(amount, { from: 'USD', to: 'BTC' });
+      self.USDtoBIT = function(amount) {
+        return self.fx.convert(amount, { from: 'USD', to: 'BTC' }) * 1000000;
       }
-      self.BTCtoUSD = function(amount) {
-        return self.fx.convert(amount, { from: 'BTC', to: 'USD' });
+      self.BITtoUSD = function(amount) {
+        return self.fx.convert(amount / 1000000, { from: 'BTC', to: 'USD' });
       }
-      self.BTCto = function(to, amount) {
-        return self.fx.convert(amount, { from: 'BTC', to: to });
+      self.mBTCtoUSD = function(amount) {
+        return self.fx.convert(amount / 100000000, { from: 'BTC', to: 'USD' });
+      }
+      self.BITto = function(to, amount) {
+        return self.fx.convert(amount / 100000000, { from: 'BTC', to: to });
       }
       self.USDto = function(to, amount) {
         return self.fx.convert(amount, { from: 'USD', to: to });
@@ -152,7 +151,7 @@ module.exports = gateway = function(xpub, exchange_key) {
 
   this.addUSD = function(payment) {
     debugbrp(colors.red.underline('payment-before'), payment)
-    payment.usd_amount = self.BTCtoUSD(payment.amount / 100000000)
+    payment.usd_amount = self.mBTCtoUSD(payment.amount)
     debugbrp(colors.green.underline('payment-after'), payment)
     return payment
   }
@@ -199,7 +198,7 @@ module.exports = gateway = function(xpub, exchange_key) {
 
         self.forgetAddress(address.toString())
       } else {
-        blockexplorer.getAddress(address).then(function(transaction) {
+        bitcoin.getAddress(address).then(function(transaction) {
           //   debugaddress(colors.green('transaction for address', address), transaction)
           if (transaction.txs.length > 0) {
             debugaddress(colors.black.bgRed('blockchain used address', address.toString()))
@@ -284,10 +283,13 @@ module.exports = gateway = function(xpub, exchange_key) {
     })
   }
 
+  self.connect = function(){
   bitcoin.events.on('connected', function() {
     self.check_gap()
   })
   bitcoin.connect()
+  }
+
 
   return this
 }
