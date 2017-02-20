@@ -148,7 +148,10 @@ This module automatically takes care of all the timing and proper address reuse 
 Contributing
 --
 
-Donations to the same address used in the examples (**1K2xWPtGsvg5Sa2X7URZ5VfU8xS62McbXz**) are highly appreciated.
+Donations to the same address used in the examples are highly appreciated:
+
+![**1K2xWPtGsvg5Sa2X7URZ5VfU8xS62McbXz**](https://api.qrserver.com/v1/create-qr-code/?data=1K2xWPtGsvg5Sa2X7URZ5VfU8xS62McbXz)
+**1K2xWPtGsvg5Sa2X7URZ5VfU8xS62McbXz**
 
 Also, code is welcome, important Unit Tests are still pending.
 
