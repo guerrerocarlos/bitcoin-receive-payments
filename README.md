@@ -134,11 +134,11 @@ Timer needed because of BIP44
 
 [BIP0044](https://github.com/bitcoin/bips/blob/master/bip-0044.mediawiki) defines that when recovering a [Deterministic Wallet](https://en.bitcoin.it/wiki/Deterministic_wallet), all child addresses are re-created to recover all the funds, if 20 consecutive child addresses are checked and no funds are found, it finishes recovering and no more are checked, assuming there is no more funds in any more child-addresses.
 
-In other words, regardless that a **Extended Public Key (xPub)** can create any number of public addresses to receive funds at the same time, if there is a gap of more than 20 addresses between an address that received funds and the next one, the wallet recovery algorithm will not be able to recover all the funds.
+In other words, regardless that a **Extended Public Key (xPub)** can create any number of public addresses to receive funds at the same time, if there is a gap of more than 20 addresses between an address that received funds and the next one, the wallet recovery algorithm will not be able to recover all the funds when recovering that wallet, transfering the keys to another platform, etc.
 
-So this is solved assigning addresses an expiration date in minutes and re-using them if no payment have been received in them after that period of time, instead of creating more unused addresses.
+So this is solved assigning addresses an expiration date in minutes and re-using them if no payment have been received in them after that period of time, limiting the number of unused addresses created simultaneously.
 
-The number of minutes can be modified towards improving user experience, only keep in mind that the objective is to ensure that no addresses are left unused.
+The number of minutes before expiration can be modified towards improving user experience.
 
 Batteries included
 --
