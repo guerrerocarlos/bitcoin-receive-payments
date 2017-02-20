@@ -144,3 +144,12 @@ Batteries included
 --
 
 This module automatically takes care of all the timing and proper address reuse to comply with [BIP0044](https://github.com/bitcoin/bips/blob/master/bip-0044.mediawiki). All payments made to addresses created using this module, will reach your wallet without problem.
+
+Contributing
+--
+
+Donations to the same address used in the examples (**1K2xWPtGsvg5Sa2X7URZ5VfU8xS62McbXz**) are highly appreciated.
+
+Also, code is welcome, important Unit Tests are still pending.
+
+Any problem please report it directly in [github](https://github.com/guerrerocarlos/bitcoin-receive-payments/issues)
