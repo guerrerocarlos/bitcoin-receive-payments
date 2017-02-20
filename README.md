@@ -15,11 +15,11 @@ Bitcoin is designed to remove intermediaries, this module intends exactly that.
 Security
 --
 
-No private key is stored in the server, so **funds cannot be stolen even if the server get's hacked**.
+No private key is stored in the server, so that **funds cannot be stolen in case of the server being hacked**.
 
 Backend
 --
-This modules uses the [insight-api](https://github.com/bitpay/insight-api) that is already running on many reliable servers online.
+This modules uses [bitcoin-live-transactions](https://www.npmjs.com/package/bitcoin-live-transactions) module to connect to the Bitcoin P2P network, **bitcoin-live-transactions** module connects via socket.io to [insight](https://github.com/bitpay/insight-api) public instances that are running online.
 
 Install
 --------------------
