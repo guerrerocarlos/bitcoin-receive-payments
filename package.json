@@ -19,6 +19,9 @@
   "scripts": {
     "test": "node test.js"
   },
+  "bugs": {
+    "url": "https://github.com/guerrerocarlos/bitcoin-receive-payments/issues"
+  },
   "keywords": [
     "bitcoin",
     "gateway",
@@ -29,6 +32,6 @@
   "license": "MIT",
   "repository": {
     "type": "git",
-    "url": "github.com/guerrerocarlos/bitcoin-receive-payments"
+    "url": "https://github.com/guerrerocarlos/bitcoin-receive-payments"
   }
 }
