@@ -19,7 +19,7 @@ No private key is stored in the server, so that **funds cannot be stolen in case
 
 Backend
 --
-This module uses [bitcoin-live-transactions](https://www.npmjs.com/package/bitcoin-live-transactions) module to connect to the **Bitcoin P2P network**, using [insight](https://github.com/bitpay/insight-api) public instances that are running online, using [socket.io](https://www.npmjs.com/package/socket.io).
+This module uses [bitcoin-live-transactions](https://www.npmjs.com/package/bitcoin-live-transactions) to connect in real time to the **Bitcoin P2P network**, using [insight](https://github.com/bitpay/insight-api) public instances that are running online ([socket.io](https://www.npmjs.com/package/socket.io)).
 
 Install
 --------------------
