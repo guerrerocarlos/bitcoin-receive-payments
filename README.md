@@ -47,7 +47,7 @@ xPubs can be created any bitcoin wallet that supports [BIT32](https://github.com
 
 I do recommend visiting [http://bip32.org/](http://bip32.org/) to better understand how Deterministic Wallets work.
 
-For example, the **bitpay** wallet (desktop version) automatically creates one for you, in the it's located at: 
+For example, the **bitpay** wallet (desktop version) automatically creates one for you, to get it go to: 
 > **Settings -> Personal Wallet -> More Options -> Wallet Information -> Copayer 0**
 
 On **Copay** (iOS) wallet:
