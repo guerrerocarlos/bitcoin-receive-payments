@@ -151,8 +151,9 @@ Contributing
 Donations to the same address used in the examples are highly appreciated:
 
 ![**1K2xWPtGsvg5Sa2X7URZ5VfU8xS62McbXz**](https://api.qrserver.com/v1/create-qr-code/?data=1K2xWPtGsvg5Sa2X7URZ5VfU8xS62McbXz)
+
 **1K2xWPtGsvg5Sa2X7URZ5VfU8xS62McbXz**
 
-Also, code is welcome, important Unit Tests are still pending.
+Also **code** is welcome, Unit Tests are still pending.
 
 Any problem please report it directly in [github](https://github.com/guerrerocarlos/bitcoin-receive-payments/issues)
