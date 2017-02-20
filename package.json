@@ -1,6 +1,6 @@
 {
   "name": "bitcoin-receive-payments",
-  "version": "0.0.35",
+  "version": "0.0.36",
   "description": "Plug-and-play module to start accepting bitcoins.",
   "main": "index.js",
   "dependencies": {
