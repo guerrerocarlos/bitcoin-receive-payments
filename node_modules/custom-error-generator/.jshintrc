@@ -1,0 +1,5 @@
+{
+    "node"   : true,  // Only really checking this in Node.js right now
+    "eqeqeq" : false, // The only time we're using equality checks is from typeof and property names, both are guaranteed to be strings
+    "proto"  : true  // We need to modify the __proto__ of the error we generate, in order to preserve the native prototype check https://github.com/joyent/node/issues/3212
+}

@@ -1,0 +1,15 @@
+{
+  "disclaimer": "[...]",
+  "license": "[...]",
+  "request": {
+    "query": "/convert/100/EUR/USD",
+    "amount": 100,
+    "from": "EUR",
+    "to": "USD"
+  },
+  "meta": {
+    "timestamp": 1371030818,
+    "rate": 1.171755
+  },
+  "response": 233.179211
+}

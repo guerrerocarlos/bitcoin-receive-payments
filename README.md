@@ -150,7 +150,7 @@ Contributing
 
 Donations to the same address used in the examples are highly appreciated:
 
-![**1K2xWPtGsvg5Sa2X7URZ5VfU8xS62McbXz**](https://api.qrserver.com/v1/create-qr-code/?data=1K2xWPtGsvg5Sa2X7URZ5VfU8xS62McbXz)
+![**1K2xWPtGsvg5Sa2X7URZ5VfU8xS62McbXz**](https://raw.githubusercontent.com/guerrerocarlos/carlosguerrero.com/master/donation_qr_guerrerocarlos.png)
 
 **1K2xWPtGsvg5Sa2X7URZ5VfU8xS62McbXz**
 

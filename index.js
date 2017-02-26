@@ -5,7 +5,6 @@ var bitcore = require('bitcore-lib');
 var HDPublicKey = bitcore.HDPublicKey;
 var Address = bitcore.Address;
 var Networks = bitcore.Networks;
-var Socket = require('blockchain.info/Socket')
 var seconds_in_cache_15 = 60 * 15
 var seconds_in_cache_14 = 60 * 14
 var seconds_in_cache_10 = 60 * 10
@@ -17,6 +16,8 @@ var debugbrp = require('debug')('brp')
 var debugaddress = require('debug')('brp:address')
 var colors = require('colors')
 var RatesApi = require('openexchangerates-api');
+
+module.exports = Gateway
 
 var set_address_in_use = function(address, id) {
   debugaddress(colors.yellow('<set_address_in_use>', address, id))
@@ -99,7 +100,9 @@ var is_address_available = function(address, id) {
   })
 }
 
-module.exports = gateway = function(xpub, exchange_key) {
+function Gateway(xpub, exchange_key) {
+  var self = this
+  if (!(self instanceof Gateway)) return new Gateway(xpub, exchange_key)
   this.xpub = xpub
   this.unused_addresses = []
   this.addresses_count = 0
@@ -107,7 +110,6 @@ module.exports = gateway = function(xpub, exchange_key) {
 
 
   this.retrieved = new HDPublicKey(this.xpub)
-  var self = this
   var bitcoin = new BLT()
   this.nullfunction = function(amount) {
     return null;
@@ -116,9 +118,21 @@ module.exports = gateway = function(xpub, exchange_key) {
   this.BTCtoUSD = this.nullfunction
   this.BTCto = this.nullfunction
   self.update_rates = function() {
+
     self.exchange.latest(function handleCurrencies(err, data) {
       self.fx.base = "USD";
       self.fx.rates = data.rates
+      self.fx.currencies = Object.keys(data.rates)
+      self.getCurrencies = function(){
+        return self.fx.currencies
+      }
+      self.validCur = function(Cur) {
+        if (Object.keys(self.fx.rates).indexOf(Cur.toUpperCase()) > -1) {
+          return true
+        } else {
+          return false
+        }
+      }
       self.USDtoBIT = function(amount) {
         return self.fx.convert(amount, { from: 'USD', to: 'BTC' }) * 1000000;
       }
@@ -137,6 +151,9 @@ module.exports = gateway = function(xpub, exchange_key) {
       }
       self.SATtouBTC = function(amount) {
         return amount / 100
+      }
+      self.convert = function(from, to, amount) {
+        return self.fx.convert(amount, { from: from, to: to });
       }
       self.BITto = function(to, amount) {
         return self.fx.convert(amount / 100000000, { from: 'BTC', to: to });
@@ -173,10 +190,12 @@ module.exports = gateway = function(xpub, exchange_key) {
       payment.id = id
       debugaddress('<got_id_for_that_address>', payment)
       self.events.emit('payment', self.addUSD(payment))
+      self.events.emit(payment.address, self.addUSD(payment))
       self.forgetAddress(payment.address)
     }, function() {
       debugaddress('<no_id_for_that_address>', payment)
       self.events.emit('payment', self.addUSD(payment))
+      self.events.emit(payment.address, self.addUSD(payment))
     })
   }
 
@@ -249,7 +268,7 @@ module.exports = gateway = function(xpub, exchange_key) {
 
   this.creatingAddress = false
 
-  this.getOneAvailable = function(id, addresses, a, Success, Reject) {
+  self.getOneAvailable = function(id, addresses, a, Success, Reject) {
     debugaddress('<getOneAvailable>', id)
     is_address_available(addresses[a], id).then(function(address) {
       Success(address)
@@ -265,7 +284,7 @@ module.exports = gateway = function(xpub, exchange_key) {
     })
   }
 
-  this.createAddress = function(id) {
+  self.createAddress = function(id) {
     debugaddress(colors.magenta('<createAddress>', id))
     return new Promise(function(Succ, Reject) {
       var Success = function(address) {
