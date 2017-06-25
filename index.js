@@ -118,7 +118,7 @@ var generate_key = function() {
   });
 }
 
-function Gateway(exchange_key) {
+function Gateway(xpub, exchange_key) {
   var self = this
   this.ies = {}
   if (!(self instanceof Gateway)) return new Gateway(xpub, exchange_key)
