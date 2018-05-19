@@ -354,7 +354,18 @@
   "georadius": {
     "arity": -6,
     "flags": [
-      "write"
+      "write",
+      "movablekeys"
+    ],
+    "keyStart": 1,
+    "keyStop": 1,
+    "step": 1
+  },
+  "georadius_ro": {
+    "arity": -6,
+    "flags": [
+      "readonly",
+      "movablekeys"
     ],
     "keyStart": 1,
     "keyStop": 1,
@@ -363,7 +374,18 @@
   "georadiusbymember": {
     "arity": -5,
     "flags": [
-      "write"
+      "write",
+      "movablekeys"
+    ],
+    "keyStart": 1,
+    "keyStop": 1,
+    "step": 1
+  },
+  "georadiusbymember_ro": {
+    "arity": -5,
+    "flags": [
+      "readonly",
+      "movablekeys"
     ],
     "keyStart": 1,
     "keyStop": 1,
@@ -492,7 +514,8 @@
   "hmget": {
     "arity": -3,
     "flags": [
-      "readonly"
+      "readonly",
+      "fast"
     ],
     "keyStart": 1,
     "keyStop": 1,
@@ -502,7 +525,8 @@
     "arity": -4,
     "flags": [
       "write",
-      "denyoom"
+      "denyoom",
+      "fast"
     ],
     "keyStart": 1,
     "keyStop": 1,
@@ -529,7 +553,7 @@
     "step": 1
   },
   "hset": {
-    "arity": 4,
+    "arity": -4,
     "flags": [
       "write",
       "denyoom",
@@ -755,7 +779,8 @@
   "mget": {
     "arity": -2,
     "flags": [
-      "readonly"
+      "readonly",
+      "fast"
     ],
     "keyStart": 1,
     "keyStop": -1,
@@ -777,9 +802,9 @@
       "admin",
       "noscript"
     ],
-    "keyStart": 1,
-    "keyStop": 1,
-    "step": 1
+    "keyStart": 0,
+    "keyStop": 0,
+    "step": 0
   },
   "monitor": {
     "arity": 1,
@@ -832,7 +857,7 @@
     "step": 0
   },
   "object": {
-    "arity": 3,
+    "arity": -2,
     "flags": [
       "readonly"
     ],
